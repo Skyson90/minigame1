@@ -14,12 +14,13 @@ public class playerControler : MonoBehaviour
 {
 
     //---- Variables ----
-    public float horizontalInput;
-    public float verticalInput;
+    private float horizontalInput;
+    private float verticalInput;
     public float speed = 20.0f;
     public float jumpForce = 10.0f;
     public float gravityModifier;
-    public bool isOnGround = true;
+    private int jumps = 0;
+    public int maxJumps = 2;
 
     private Rigidbody playerRb;
 
@@ -40,21 +41,23 @@ public class playerControler : MonoBehaviour
         # Desc: Moves the game object based on the 
         # player's input
         -----------------------------------------*/
+        // Movement across the X and Z axis
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
         transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
         transform.Translate(Vector3.forward * verticalInput * Time.deltaTime * speed);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround) 
+        //Movement across the Y axis
+        if (Input.GetKeyDown(KeyCode.Space) && jumps < maxJumps) 
         {
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isOnGround = false;
+            jumps += 1;
         }
     }
 
     // Is called once the player colides with the ground
     private void OnCollisionEnter(Collision collision)
     {
-        isOnGround = true;
+        jumps = 0;
     }
 }
