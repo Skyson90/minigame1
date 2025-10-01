@@ -52,6 +52,7 @@ public class playerControler : MonoBehaviour
         }
     }
 
+    // Is called once the player colides with the ground
     private void OnCollisionEnter(Collision collision)
     {
         isOnGround = true;
